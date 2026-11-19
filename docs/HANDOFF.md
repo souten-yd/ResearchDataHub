@@ -1,5 +1,14 @@
 # HANDOFF — ResearchDataHub / PatentBuddy
 
+## 2026-11-19 独立リポジトリ移管（最新）
+
+- ResearchDataHubサーバーの正本を souten-yd/ResearchDataHub へ移すPR #1。以下の2026-11-11以前の旧RepoのSHA/Release進捗は履歴であり、現在の新Repoのmainではない。
+- 新Repoは v0.5.14 予定。QPKG ID QnapLibrary、内部import qnaplibrary、ポート17871、既存QPKGデータ/認証/パスキーは不変。QNAPとLinux両配布を提供する。
+- 旧v0.5.12以下は旧GitHub Releaseを参照するため、新Repoのv0.5.14を自動検出しない。旧Repoのv0.5.13更新ブリッジ、またはQPKG手動上書きが必要。docs/repository-migration.mdを確認。
+- 初期移管は機能互換を優先して特許/アドオンの旧コードも複製。PatentBuddyアドオンの完全な切り出し、重複削除、旧Repoのサーバーリリース停止は未完。旧Repoの動作を先に壊さない。
+- Python/QPKG/Linux配布とQNAP実機の検証はPRに結果を記載。ソース複製だけを実機検証と扱わない。
+
+
 更新: 2026-11-11。`AGENTS.md` → `DEVELOPMENT_WORKFLOW.md` → 本書 → `docs/CODEX_NEXT.md` の順に確認する。計画の正本は `researchdatahub-plan.md`、性能受入は `researchdatahub-performance.md`。
 
 ## 現在地

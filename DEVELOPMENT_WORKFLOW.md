@@ -1,4 +1,4 @@
-# 開発ルール — QnapLibrary
+# 開発ルール — ResearchDataHub（QNAP/Linux、内部互換名 QnapLibrary）
 
 このファイルは人間・AI を問わず全開発者が従う規則です。別の AI へ途中で引き継ぐ前提で書いています。
 まず `AGENTS.md` → 本書 → `docs/HANDOFF.md`（現在地）の順に読んでください。
