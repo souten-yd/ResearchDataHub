@@ -10,7 +10,7 @@ import sys
 import tarfile
 import zlib
 
-REQUIRED = ("qnaplibrary/server.py", "qnaplibrary/web/app.js", "qnaplibrary.sh", "python3-path")
+REQUIRED = ("qnaplibrary/server.py", "qnaplibrary/web/app.js", "qnaplibrary.sh", "python3-path", "researchdatahub/cli.py")
 
 
 def members(data):

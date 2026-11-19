@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.5.14
+
+- ResearchDataHubをQNAP/QTS・Linux対応の独立リポジトリへ移管し、サーバーの配布/更新先を変更。既存のQPKG識別子・ポート・データ・認証・API・旧importパスを維持します。
+- QPKGにResearchDataHubのLinux互換起動モジュールも同梱し、インストール内容検査を追加しました。
+- PatentBuddyのControlDeckアドオンは旧リポジトリで継続開発し、本リポジトリの同梱アドオン関連コードは移行期の互換用です。
+
+
 ## v0.5.12
 
 - ControlDeck内の起動用JavaScript/CSSを初回画面へ同梱し、HTTP接続でCookieが利用できない環境でも起動できます。内容ハッシュによるCSP制限は維持します。

@@ -26,6 +26,7 @@ mkdir -p "$PKG/shared" "$PKG/icons"
 cp "$ROOT/qpkg/qpkg.cfg" "$ROOT/qpkg/package_routines" "$PKG/"
 cp "$ROOT/qpkg/shared/qnaplibrary.sh" "$ROOT/qpkg/shared/python3-path" "$PKG/shared/"
 cp -R "$ROOT/qnaplibrary" "$PKG/shared/qnaplibrary"
+cp -R "$ROOT/researchdatahub" "$PKG/shared/researchdatahub"
 find "$PKG/shared" -name '__pycache__' -prune -exec rm -rf {} +
 cp "$ROOT/README.md" "$ROOT/CHANGELOG.md" "$PKG/shared/"
 python3 "$ROOT/scripts/make-icons.py" "$PKG/icons" >/dev/null
