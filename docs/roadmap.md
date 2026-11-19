@@ -1,0 +1,54 @@
+# ロードマップ
+
+## v0.1（土台・特許支援優先） — 本PR
+- API サーバー（REST + MCP）、LAN ペアリング、管理Web（パスワード＋パスキー）
+- コレクション／文書／FTS5 日本語検索／RAM ベクトル／RRF ハイブリッド
+- 特許案件ワークフロー（11段階、期限計算、請求項の版管理、構成要件分解、クレームチャート、AI 支援 12 タスク）
+- AI チャット（QnapAssistant / OpenRouter 詳細設定 / OpenAI 互換、RAG、SSE）
+- コネクタ: GDELT、RSS、EPO OPS、JPO API（実験的）、USPTO ODP（実験的）
+- デバッグバンドル、GitHub Releases 自動更新、Linux tar.gz / QPKG
+
+## v0.2（特許の網羅性） — 完了
+- 特許ウォッチ（定期収集・差分・類似度で X/Y 候補提示）
+- IPC/FI/Fターム辞書、審査基準コレクションの取り込み支援
+- 期限通知（Webhook / メール）
+
+## v0.3（スケールと品質） — 完了
+- Qdrant アダプタ、外部リランカー、集計ダッシュボード
+- PDF 取り込みクライアント（別PC）
+
+## v0.4（市場・規格） — 完了
+- 規格メタデータの整備支援（JIS/ISO/IEC 番号・ICS・対応関係）
+- e-Stat / EDINET / SEC コネクタ、調査ジョブ
+
+## v0.5（データ保全・iOSホーム画面）
+- 管理者専用の SQLite 手動スナップショットと整合性確認（設定/秘密情報は既存の HBS3 と併用）
+- iOS Safari「ホーム画面に追加」用の 180px アイコン・メタデータ
+- ホーム KPI のコンパクト化と処理状態の読み取り表示
+
+## 汎用ResearchDataHub + ControlDeck PatentBuddyへの移行（2026-11-10決定）
+
+1. **設計チェックポイント（PR #16、docs-only）**: 名前/責務/データ正本/機密境界を `researchdatahub-plan.md` に確定。Codex向け詳細は `CODEX_NEXT.md`。**まだLinux aliasなどの新コードは未実装**。
+2. **Linux PC用ResearchDataHub（次のPR）**: `python3 -m researchdatahub` と `rdh.sh`、同じbackendのままLinux配布へ。旧`qnaplibrary` / QPKG ID / 17871 / DBパスを壊さずブランドを分離。
+3. **認証・公開資料API**: 既存Draft PR #11（パスキー/セッション/更新501）と #15（公開承認済み抜粋限定API）を再検証。未公開発明/請求項はクラウドLLMに出さない（PR #12はmain反映済み）。
+4. **ResearchDataHub保存効率・低I/O・大量API**: [性能要件](researchdatahub-performance.md)に従って、同一再送/大量登録/索引検索/アイドル時の物理I/Oと時間を測定。Draft PR #13のバッチ冪等・必要列のみ一覧・IDカーソルをテストして汎用化。索引・圧縮・並列化は実測で利点が確認できた場合のみ採用。
+5. **ControlDeck PatentBuddy**: Draft PR #14のAdd-on v2 A0を更新し、Host認証、ResearchDataHub API接続、ローカルLLM、Jobs、GraphRAG、iPhone対応へ進む。PCに別の正本DBを作らない。
+6. **本番のQNAP移行（最後）**: PCの正本から検証済みスナップショット、設定・パスキー・秘密・文書をQNAPへ安全移動。PCとNASの同時書込は不可。ControlDeck側はそのまま利用。
+
+[決定したアーキテクチャ](researchdatahub-plan.md) / [保存・I/O性能受入基準](researchdatahub-performance.md) / [Codex実装・受入指示](CODEX_NEXT.md)
+
+## 特許専用ロードマップ（v0.6以降）
+
+詳細は [patent-feature-plan.md](patent-feature-plan.md) を参照。機密保護をゲートに、発明創出・ブレスト・請求項→先行技術/新規性・進歩性→競合/回避設計・FTO→出願文書へ段階的に進める。AIの外部送信は公開一般論に限定し、未公開発明・案件資料はローカル専用。
+
+
+### 2026-11-10 PR-A進捗
+PR #16の設計はmainへ統合済み。PR #17でLinux別名入口・doctor/serve/test・health/Web表示・配布同梱を実装し、61 tests、Linux配布/非rootインストール、QPKGのLinux上smoke、ControlDeckローカルLLMの合成案件assistを検証。リリース/更新は検証待ち、PR-B〜GとQNAP実機は未完了。詳細はHANDOFF。上記の「未実装」は設計チェックポイント時点の記録。
+
+## K0–K6: 知識エッセンスを蓄積・再利用する特許発明支援（2026-11-17計画追加）
+
+- **計画の正本**: [知識グラフ・エッセンス再利用計画](knowledge-graph-plan.md) / [詳細設計](knowledge-graph-design.md)。
+- 既存 [PR #23](https://github.com/souten-yd/PatentBuddy/pull/23) のDraft GraphRAG（文献/請求項の根拠・版・引用の追跡）が**先行依存**。PR #23の未配布機能をmainの実装済みと混同しない。
+- **K0** 既存GraphRAGと正本所有権/認証を実コード・diffで確認 → **K1** 文献からProblem/Principle/Mechanism/Implementation/Effect/Constraintの根拠付き知識提案抽出 → **K2** 同義語・上位概念、重複候補/人手review、版失効 → **K3** Obsidian型部分グラフ・知識カード・原文への逆引き。
+- **K4** 別案件・異分野の知識検索と応用条件の提示 → **K5** 選択知識の組合せからIdea案を作り、先行技術・請求項・FTOへ再照合 → **K6** 大量データ、NAS低I/O、実機と単一正本移行を受入。
+- **文書だけの計画**: 知識化・地図UI・発明案生成はこのPRで実装しない。既存検索/論文/PDF/特許性評価を壊さない。軽微な共有型はPR #23に同梱し得るが、K1以降の主要機能は後続PRへ分割する。
